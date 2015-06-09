@@ -1,18 +1,25 @@
 package uk.co.liammcnabb.filmix;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.InputStream;
 
 
 public class RandomDisplayer extends ActionBarActivity {
 
     TextView fTitle,fRating,fRunTime,fPlot,fScore,fGenre;
-    FrameLayout fPoster;
+    ImageView fPoster;
 
 
     @Override
@@ -27,7 +34,7 @@ public class RandomDisplayer extends ActionBarActivity {
         fPlot = (TextView) findViewById(R.id.txtPlot);
         fScore = (TextView) findViewById(R.id.txtScore);
         fGenre = (TextView) findViewById(R.id.txtGenre);
-        fPoster = (FrameLayout) findViewById(R.id.poster);
+        fPoster = (ImageView) findViewById(R.id.imgposter);
 
 
 
@@ -48,6 +55,9 @@ public class RandomDisplayer extends ActionBarActivity {
                 "images/M/MV5BMTQ1MjQwMTE5OF5BMl5BanBnXkFtZTgwNjk3MTcyMDE@._V1_SX300.jpg";
         String metascore="74";
         String genre = "Animation, Adventure, Comedy";
+        new DownloadImageTask((ImageView) findViewById(R.id.imgposter))
+                .execute(poster);
+
 
         StringBuffer sb = new StringBuffer();
         sb.append(title);
@@ -59,14 +69,34 @@ public class RandomDisplayer extends ActionBarActivity {
         fScore.setText(metascore);
         fGenre.setText(genre);
 
+        fPoster.setAdjustViewBounds(true);
     }
 
 
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
 
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
 
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
 
-
-
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,3 +120,5 @@ public class RandomDisplayer extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+
+

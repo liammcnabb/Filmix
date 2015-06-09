@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="&quot;Title&quot;"
         android:id="@+id/txtTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -31,10 +31,13 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="#ff2daf57"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:id="@+id/poster"></FrameLayout>
+            android:id="@+id/poster">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/imgposter" />
+        </FrameLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -47,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text="&quot;Rating&quot;"
                 android:id="@+id/txtAgeRating"
                 android:textSize="@dimen/abc_text_size_large_material"
                 android:textStyle="bold"
@@ -57,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:text="&quot;Run Time&quot;"
                 android:id="@+id/txtRunTime"
                 android:textSize="@dimen/abc_text_size_medium_material"
                 android:textStyle="bold"
@@ -67,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
+                android:text="&quot;Genre&quot;"
                 android:id="@+id/txtGenre"
                 android:textColor="#ffffff"
                 android:paddingBottom="20dp"
@@ -90,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
+                android:text="&quot;Score&quot;"
                 android:id="@+id/txtScore"
                 android:layout_marginTop="10dp"
                 android:textSize="@dimen/abc_text_size_display_1_material"
