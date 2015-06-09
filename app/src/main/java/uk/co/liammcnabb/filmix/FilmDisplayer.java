@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 
 
 public class FilmDisplayer extends ActionBarActivity {
@@ -12,6 +13,17 @@ public class FilmDisplayer extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_displayer);
+
+        /**
+         * Set Ads
+         */
+        WebView adDisplay = (WebView) findViewById(R.id.adsDisplay);
+        adDisplay.getSettings().setJavaScriptEnabled(true);
+        adDisplay.loadUrl("http://liammcnabb.co.uk");
+
+
+
+
     }
 
 
