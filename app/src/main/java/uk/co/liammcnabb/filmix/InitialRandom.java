@@ -1,27 +1,41 @@
 package uk.co.liammcnabb.filmix;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 
-public class FilmDisplayer extends ActionBarActivity {
+public class InitialRandom extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_film_displayer);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_initial_random);
+        //Remove title bar
 
         /**
          * Set Ads
-         */
+
         WebView adDisplay = (WebView) findViewById(R.id.adsDisplay);
         adDisplay.getSettings().setJavaScriptEnabled(true);
         adDisplay.loadUrl("http://liammcnabb.co.uk");
+        */
 
+        final ImageButton randomButton = (ImageButton) findViewById(R.id.btnRandom);
 
+        randomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(InitialRandom.this,RandomDisplayer.class));
+            }
+        });
 
 
     }

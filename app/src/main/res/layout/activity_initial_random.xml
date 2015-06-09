@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".DisplayFilm"
+    android:orientation="vertical"
+    android:background="#ffc0392b">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/filmix"
+        android:cropToPadding="true"
+        android:adjustViewBounds="false"
+        android:paddingTop="20dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:weightSum="1"
+        android:longClickable="false"
+        android:gravity="center_vertical|center_horizontal">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/btnRandom"
+
+            android:src="@mipmap/img_dice"
+            android:background="@drawable/btn_dice_initial"
+            android:padding="20dp"
+            android:cropToPadding="false"
+            android:longClickable="false" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/adsHolder"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:paddingTop="5px">
+        <WebView android:id="@+id/adsDisplay"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"></WebView>
+    </LinearLayout>
+</LinearLayout>
