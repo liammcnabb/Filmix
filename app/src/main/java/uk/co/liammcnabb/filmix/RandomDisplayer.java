@@ -1,25 +1,35 @@
 package uk.co.liammcnabb.filmix;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.io.InputStream;
 
 
 public class RandomDisplayer extends ActionBarActivity {
 
+    final String imdbString = "http://www.imdb.com/title/";
     TextView fTitle,fRating,fRunTime,fPlot,fScore,fGenre;
     ImageView fPoster;
+    Button imdb;
+    String lastId;
 
 
     @Override
@@ -27,6 +37,12 @@ public class RandomDisplayer extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_random_displayer);
+        AdView adView = (AdView) this.findViewById(R.id.adsDisplay2);
+        //adView.setAdUnitId("ca-app-pub-7076921135777779/7155372240");
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        adView.loadAd(adRequest);
 
         fTitle = (TextView) findViewById(R.id.txtTitle);
         fRating = (TextView) findViewById(R.id.txtAgeRating);
@@ -35,10 +51,10 @@ public class RandomDisplayer extends ActionBarActivity {
         fScore = (TextView) findViewById(R.id.txtScore);
         fGenre = (TextView) findViewById(R.id.txtGenre);
         fPoster = (ImageView) findViewById(R.id.imgposter);
-
-
-
+        imdb = (Button) findViewById(R.id.btnImdb);
         testData();
+
+
     }
 
     public void testData()
@@ -55,10 +71,11 @@ public class RandomDisplayer extends ActionBarActivity {
                 "images/M/MV5BMTQ1MjQwMTE5OF5BMl5BanBnXkFtZTgwNjk3MTcyMDE@._V1_SX300.jpg";
         String metascore="74";
         String genre = "Animation, Adventure, Comedy";
+        String id = "tt2294629";
         new DownloadImageTask((ImageView) findViewById(R.id.imgposter))
                 .execute(poster);
 
-
+        lastId = id;
         StringBuffer sb = new StringBuffer();
         sb.append(title);
         sb.append(" ("+ year + ")");
@@ -70,6 +87,15 @@ public class RandomDisplayer extends ActionBarActivity {
         fGenre.setText(genre);
 
         fPoster.setAdjustViewBounds(true);
+
+        imdb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(imdbString + lastId + "/"));
+                startActivity(browserIntent);
+            }
+        });
     }
 
 

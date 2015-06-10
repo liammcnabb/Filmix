@@ -10,8 +10,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.google.android.gms.ads.AdRequest;
+
+import com.google.android.gms.ads.AdView;
+
 
 public class InitialRandom extends ActionBarActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,14 @@ public class InitialRandom extends ActionBarActivity {
         adDisplay.getSettings().setJavaScriptEnabled(true);
         adDisplay.loadUrl("http://liammcnabb.co.uk");
         */
+
+        AdView adView = (AdView) this.findViewById(R.id.adsDisplay);
+        //adView.setAdUnitId("ca-app-pub-7076921135777779/7155372240");
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        adView.loadAd(adRequest);
+
 
         final ImageButton randomButton = (ImageButton) findViewById(R.id.btnRandom);
 
