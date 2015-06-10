@@ -19,7 +19,7 @@
         android:src="@drawable/filmix"
         android:cropToPadding="true"
         android:adjustViewBounds="false"
-        android:paddingTop="20dp" />
+        android:paddingTop="70dp" />
 
     <LinearLayout
         android:orientation="vertical"

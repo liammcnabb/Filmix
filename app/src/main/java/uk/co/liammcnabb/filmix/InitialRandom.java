@@ -1,13 +1,13 @@
 package uk.co.liammcnabb.filmix;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.gms.ads.AdRequest;
@@ -23,15 +23,9 @@ public class InitialRandom extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_initial_random);
-        //Remove title bar
+        getSupportActionBar().setElevation(0);
 
-        /**
-         * Set Ads
 
-        WebView adDisplay = (WebView) findViewById(R.id.adsDisplay);
-        adDisplay.getSettings().setJavaScriptEnabled(true);
-        adDisplay.loadUrl("http://liammcnabb.co.uk");
-        */
 
         AdView adView = (AdView) this.findViewById(R.id.adsDisplay);
         //adView.setAdUnitId("ca-app-pub-7076921135777779/7155372240");
@@ -57,7 +51,7 @@ public class InitialRandom extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_display_film, menu);
+        getMenuInflater().inflate(R.menu.initial_random, menu);
         return true;
     }
 

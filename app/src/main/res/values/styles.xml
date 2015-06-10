@@ -3,6 +3,25 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowActionBarOverlay">false</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="ActionBar" parent="android:Widget.ActionBar">
+        <item name="android:background">@null</item>
+        <item name="android:displayOptions">showHome|showTitle</item>
+        <item name="background">@color/actionbar</item>
+
+
+    </style>
+
+    <style name="ActionBarTabStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="background">@color/actionbar_tabs</item>
+        <item name="android:background">@color/actionbar_tabs</item>
     </style>
 
     <style name="TextShadow">
