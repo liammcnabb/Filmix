@@ -28,20 +28,83 @@
         android:weightSum="1"
         android:longClickable="false"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_weight="0.1">
+        android:layout_weight="0.1"
+        android:id="@+id/lytAdvancedSettings"
+        android:visibility="invisible">
 
-        <ImageButton
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtAuthorId"
+                android:layout_gravity="center"
+                android:hint="IMDb Author ID"
+                android:layout_weight="0.2"
+                android:background="@drawable/textfield"
+                android:padding="10dp"
+                android:minLines="1" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chkAuthorID"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/btnRandom"
+            android:text="Add your IMDB Author ID to use your own watchlist to find a film"
+            android:id="@+id/textView"
+            style="@style/TextShadow"
+            android:textSize="@dimen/abc_dropdownitem_text_padding_right"
+            android:paddingTop="3dp"
+            android:paddingBottom="10dp" />
 
-            android:src="@mipmap/img_dice"
-            android:background="@drawable/btn_dice_initial"
-            android:padding="20dp"
-            android:cropToPadding="false"
-            android:longClickable="false" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/txtCustomList"
+                android:layout_weight="0.2"
+                android:lines="4"
+                android:hint="Add your own movie to randomly select from"
+                android:nestedScrollingEnabled="true"
+                android:paddingBottom="10dp"
+                android:background="@drawable/textfield"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/chkCustomList" />
+        </LinearLayout>
+
     </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:id="@+id/btnRandom"
+
+        android:src="@mipmap/img_dice"
+        android:background="@drawable/btn_dice_initial"
+        android:padding="20dp"
+        android:cropToPadding="false"
+        android:longClickable="false"
+        android:layout_gravity="center" />
 
     <LinearLayout android:id="@+id/adsHolder"
         android:layout_width="fill_parent"

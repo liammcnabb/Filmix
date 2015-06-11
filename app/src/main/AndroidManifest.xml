@@ -15,6 +15,7 @@
         <activity
             android:name=".InitialRandom"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

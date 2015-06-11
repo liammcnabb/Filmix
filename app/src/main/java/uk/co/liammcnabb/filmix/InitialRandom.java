@@ -4,11 +4,17 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 
@@ -17,6 +23,9 @@ import com.google.android.gms.ads.AdView;
 
 public class InitialRandom extends ActionBarActivity {
 
+    LinearLayout settings;
+    TextView authorID, customList;
+    CheckBox idCheck, customCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +37,6 @@ public class InitialRandom extends ActionBarActivity {
 
 
         AdView adView = (AdView) this.findViewById(R.id.adsDisplay);
-        //adView.setAdUnitId("ca-app-pub-7076921135777779/7155372240");
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
@@ -40,13 +48,83 @@ public class InitialRandom extends ActionBarActivity {
         randomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(InitialRandom.this,RandomDisplayer.class));
+                randomize();
             }
         });
 
+        settings = (LinearLayout) findViewById(R.id.lytAdvancedSettings);
+        settings.setTag("off");
 
+        authorID = (TextView) findViewById(R.id.txtAuthorId);
+        idCheck = (CheckBox) findViewById(R.id.chkAuthorID);
+        customList = (TextView) findViewById(R.id.txtCustomList);
+        customCheck = (CheckBox) findViewById(R.id.chkCustomList);
+
+        authorID.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                idCheck.setChecked(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        customList.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                customCheck.setChecked(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        }
+
+    public void advancedSettings()
+    {
+
+        if(settings.getTag().equals("off"))
+        {
+            settings.setVisibility(View.VISIBLE);
+            settings.setTag("on");
+        } else if (settings.getTag().equals("on"))
+        {
+            settings.setVisibility(View.INVISIBLE);
+            settings.setTag("off");
+        }
     }
 
+    public void randomize()
+    {
+        if(customCheck.isChecked())
+        {
+            //TODO Create Random List using Custom List
+        } else if (idCheck.isChecked())
+        {
+            //TODO Create Author Check to Validate Author ID
+
+            //TODO Create Random List using user's Author ID
+        } else
+        {
+            //TODO Use Watchlist's to create a list of new Random Movies
+        }
+        startActivity(new Intent(InitialRandom.this,RandomDisplayer.class));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,7 +142,7 @@ public class InitialRandom extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            advancedSettings();
         }
 
         return super.onOptionsItemSelected(item);
