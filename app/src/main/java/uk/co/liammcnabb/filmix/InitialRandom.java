@@ -2,10 +2,12 @@ package uk.co.liammcnabb.filmix;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,12 +22,15 @@ import com.google.android.gms.ads.AdRequest;
 
 import com.google.android.gms.ads.AdView;
 
+import java.util.ArrayList;
+
 
 public class InitialRandom extends ActionBarActivity {
 
     LinearLayout settings;
     TextView authorID, customList;
     CheckBox idCheck, customCheck;
+    ArrayList<Film> filmList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,7 @@ public class InitialRandom extends ActionBarActivity {
                 .build();
         adView.loadAd(adRequest);
 
-
+        filmList = new ArrayList<Film>();
         final ImageButton randomButton = (ImageButton) findViewById(R.id.btnRandom);
 
         randomButton.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +116,7 @@ public class InitialRandom extends ActionBarActivity {
 
     public void randomize()
     {
+        Intent intent = new Intent(InitialRandom.this,RandomDisplayer.class);
         if(customCheck.isChecked())
         {
             //TODO Create Random List using Custom List
@@ -122,9 +128,39 @@ public class InitialRandom extends ActionBarActivity {
         } else
         {
             //TODO Use Watchlist's to create a list of new Random Movies
+            dummyData();
+            intent.putExtra("FilmList", new Wrapper(filmList));
         }
-        startActivity(new Intent(InitialRandom.this,RandomDisplayer.class));
+        startActivity(intent);
     }
+
+    public void dummyData()
+    {
+        ArrayList<Film> list = new ArrayList<Film>();
+
+        for(int i=0; i<10; i++)
+        {
+            Film f = new Film(
+                    "Frozen " + i,
+                    "2013",
+                    "PG",
+                    "102 min",
+                    "When the newly crowned Queen Elsa accidentally uses her power" +
+                            " to turn things into ice to curse her home in infinite winter, her sister," +
+                            " Anna, teams up with a mountain man, his playful reindeer, and a snowman to" +
+                            " change the weather condition.",
+                    "http://ia.media-imdb.com/" +
+                    "images/M/MV5BMTQ1MjQwMTE5OF5BMl5BanBnXkFtZTgwNjk3MTcyMDE@._V1_SX300.jpg",
+                    "74",
+                    "Animation, Adventure, Comedy",
+                    "tt2294629"
+            );
+            Log.d("Film " + i + ":", f.toString());
+            list.add(f);
+        }
+        filmList = list;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 
 public class RandomDisplayer extends ActionBarActivity {
@@ -30,6 +33,8 @@ public class RandomDisplayer extends ActionBarActivity {
     ImageView fPoster;
     Button imdb;
     String lastId;
+    int listIndex = 0;
+    ArrayList<Film> list;
 
 
     @Override
@@ -38,7 +43,6 @@ public class RandomDisplayer extends ActionBarActivity {
 
         setContentView(R.layout.activity_random_displayer);
         AdView adView = (AdView) this.findViewById(R.id.adsDisplay2);
-        //adView.setAdUnitId("ca-app-pub-7076921135777779/7155372240");
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
@@ -52,50 +56,73 @@ public class RandomDisplayer extends ActionBarActivity {
         fGenre = (TextView) findViewById(R.id.txtGenre);
         fPoster = (ImageView) findViewById(R.id.imgposter);
         imdb = (Button) findViewById(R.id.btnImdb);
-        testData();
+        Intent intent = getIntent();
+
+        Wrapper selections = (Wrapper) intent.getSerializableExtra("FilmList");
+        list = selections.getFilms();
+
+        final ImageButton randomButton = (ImageButton) findViewById(R.id.btnFurtherRandom);
+
+        randomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listIndex++;
+                randomize();
+            }
+        });
+        randomize();
 
 
     }
 
     public void testData()
     {
-        String title = "Frozen";
-        String year = "2013";
-        String ageRating = "PG";
-        String runtime="102 min";
-        String plot = "When the newly crowned Queen Elsa accidentally uses her power" +
-                " to turn things into ice to curse her home in infinite winter, her sister," +
-                " Anna, teams up with a mountain man, his playful reindeer, and a snowman to" +
-                " change the weather condition.";
-        String poster = "http://ia.media-imdb.com/" +
-                "images/M/MV5BMTQ1MjQwMTE5OF5BMl5BanBnXkFtZTgwNjk3MTcyMDE@._V1_SX300.jpg";
-        String metascore="74";
-        String genre = "Animation, Adventure, Comedy";
-        String id = "tt2294629";
-        new DownloadImageTask((ImageView) findViewById(R.id.imgposter))
-                .execute(poster);
 
-        lastId = id;
-        StringBuffer sb = new StringBuffer();
-        sb.append(title);
-        sb.append(" ("+ year + ")");
-        fTitle.setText(sb.toString());
-        fRating.setText(ageRating);
-        fRunTime.setText(runtime);
-        fPlot.setText(plot);
-        fScore.setText(metascore);
-        fGenre.setText(genre);
+    }
 
-        fPoster.setAdjustViewBounds(true);
+    public void randomize()
+    {
 
-        imdb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(imdbString + lastId + "/"));
-                startActivity(browserIntent);
+        if(listIndex != 10)
+        {
+            final String imdbString = list.get(listIndex).getImdbString();
+            try
+            {
+                new DownloadImageTask((ImageView) findViewById(R.id.imgposter))
+                        .execute(list.get(listIndex).getPoster());
             }
-        });
+            catch(Exception e)
+            {
+                Log.e("RandomDisplayer","Download Poster");
+            }
+
+            list.get(listIndex).toString();
+            lastId = list.get(listIndex).getId();
+            StringBuffer sb = new StringBuffer();
+            sb.append(list.get(listIndex).getTitle());
+            sb.append(" ("+ list.get(listIndex).getYear() + ")");
+            fTitle.setText(sb.toString());
+            fRating.setText(list.get(listIndex).getAgeRating());
+            fRunTime.setText(list.get(listIndex).getRunTime());
+            fPlot.setText(list.get(listIndex).getPlot());
+            fScore.setText(list.get(listIndex).getMetascore());
+            fGenre.setText(list.get(listIndex).getGenre());
+
+            fPoster.setAdjustViewBounds(true);
+
+            imdb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(imdbString));
+                    startActivity(browserIntent);
+                }
+            });
+        } else
+        {
+            listIndex--;
+        }
+
     }
 
 

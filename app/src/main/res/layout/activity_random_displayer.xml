@@ -167,7 +167,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:gravity="center_vertical|center_horizontal"
-                android:id="@+id/imageButton"
+                android:id="@+id/btnFurtherRandom"
                 android:src="@mipmap/img_dice"
                 android:background="@drawable/btn_dice_initial"
                 android:padding="20dp"
