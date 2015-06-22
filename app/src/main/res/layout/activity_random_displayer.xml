@@ -135,12 +135,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/scoreLayout"
         android:focusableInTouchMode="false"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="0dp">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="0.4">
 
             <Button
@@ -154,13 +155,47 @@
                 android:background="#00c06352"
                 style="@style/TextShadow"
                 android:paddingTop="10dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|center_horizontal|clip_horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="&lt;"
+                    android:id="@+id/txtPrev"
+                    android:layout_gravity="center"
+                    android:gravity="center|center_vertical|clip_horizontal"
+                    android:layout_weight="1"
+                    android:textSize="50dp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text=">"
+                    android:id="@+id/txtNext"
+                    android:layout_gravity="center"
+                    android:gravity="center|center_vertical|center_horizontal"
+                    android:layout_weight="1"
+                    android:textSize="50dp"
+                    android:textStyle="bold"
+                    android:typeface="monospace" />
+            </LinearLayout>
         </LinearLayout>
 
         <FrameLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="0.6"
-            android:padding="5dp"
             android:layout_gravity="center">
 
             <ImageButton

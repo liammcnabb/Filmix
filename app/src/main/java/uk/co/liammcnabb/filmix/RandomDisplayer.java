@@ -3,6 +3,7 @@ package uk.co.liammcnabb.filmix;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Parcelable;
@@ -29,11 +30,11 @@ import java.util.ArrayList;
 public class RandomDisplayer extends ActionBarActivity {
 
     final String imdbString = "http://www.imdb.com/title/";
-    TextView fTitle,fRating,fRunTime,fPlot,fScore,fGenre;
+    TextView fTitle,fRating,fRunTime,fPlot,fScore,fGenre,fPrev,fNext;
     ImageView fPoster;
     Button imdb;
     String lastId;
-    int listIndex = 0;
+    int listIndex, maxIndex = 0;
     ArrayList<Film> list;
 
 
@@ -56,6 +57,8 @@ public class RandomDisplayer extends ActionBarActivity {
         fGenre = (TextView) findViewById(R.id.txtGenre);
         fPoster = (ImageView) findViewById(R.id.imgposter);
         imdb = (Button) findViewById(R.id.btnImdb);
+        fPrev = (TextView) findViewById(R.id.txtPrev);
+        fNext = (TextView) findViewById(R.id.txtNext);
         Intent intent = getIntent();
 
         Wrapper selections = (Wrapper) intent.getSerializableExtra("FilmList");
@@ -66,7 +69,13 @@ public class RandomDisplayer extends ActionBarActivity {
         randomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listIndex++;
+                if(listIndex != maxIndex)
+                {
+                    listIndex = maxIndex;
+                }
+                    listIndex++;
+
+
                 randomize();
             }
         });
@@ -75,16 +84,18 @@ public class RandomDisplayer extends ActionBarActivity {
 
     }
 
-    public void testData()
-    {
-
-    }
 
     public void randomize()
     {
 
         if(listIndex != 10)
         {
+            if(listIndex > maxIndex)
+            {
+                maxIndex = listIndex;
+            }
+
+
             final String imdbString = list.get(listIndex).getImdbString();
             try
             {
@@ -118,10 +129,49 @@ public class RandomDisplayer extends ActionBarActivity {
                     startActivity(browserIntent);
                 }
             });
+
+            setupHistory();
         } else
         {
             listIndex--;
         }
+
+    }
+
+    public void setupHistory()
+    {
+        if (listIndex == 0)
+        {
+            fPrev.setTextColor(Color.argb(255,0,0,0));
+            fPrev.setClickable(false);
+        } else {
+            fPrev.setTextColor(Color.argb(100,255,255,255));
+            fPrev.setClickable(true);
+            fPrev.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listIndex--;
+                    randomize();
+                }
+            });
+        }
+
+        if (listIndex == maxIndex)
+        {
+            fNext.setTextColor(Color.argb(255,0,0,0));
+            fNext.setClickable(false);
+        } else {
+            fNext.setTextColor(Color.argb(100,255,255,255));
+            fNext.setClickable(true);
+            fNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listIndex++;
+                    randomize();
+                }
+            });
+        }
+
 
     }
 
