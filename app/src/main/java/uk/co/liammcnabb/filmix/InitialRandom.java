@@ -178,7 +178,8 @@ public class InitialRandom extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            advancedSettings();
+            //advancedSettings();
+            startActivity(new Intent(this,SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

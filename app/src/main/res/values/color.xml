@@ -2,4 +2,5 @@
 <resources>
     <color name= "actionbar">#00ffffff</color>
     <color name="actionbar_tabs">#00ffffff</color>
+    <color name="seperator">#c8c06352</color>
 </resources>
