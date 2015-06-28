@@ -2,6 +2,9 @@ package uk.co.liammcnabb.filmix;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +26,13 @@ import com.google.android.gms.ads.AdRequest;
 
 import com.google.android.gms.ads.AdView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
@@ -36,24 +46,25 @@ public class InitialRandom extends ActionBarActivity {
     ArrayList<String> filmIds;
     ArrayList<Film> filmList;
 
+    /**
+     * Displayed on Activity Creation
+     * @param savedInstanceState Android Save State
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Initial Setup
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_initial_random);
         getSupportActionBar().setElevation(0);
-
-
-
         AdView adView = (AdView) this.findViewById(R.id.adsDisplay);
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         adView.loadAd(adRequest);
 
-        filmList = new ArrayList<Film>();
-        final ImageButton randomButton = (ImageButton) findViewById(R.id.btnRandom);
 
+        //Object Instantiation
+        final ImageButton randomButton = (ImageButton) findViewById(R.id.btnRandom);
         randomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +80,7 @@ public class InitialRandom extends ActionBarActivity {
         customList = (TextView) findViewById(R.id.txtCustomList);
         customCheck = (CheckBox) findViewById(R.id.chkCustomList);
 
+        /**     POSSIBLY DEPRECATED
         authorID.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -101,8 +113,8 @@ public class InitialRandom extends ActionBarActivity {
             public void afterTextChanged(Editable s) {
 
             }
-        });
-
+        }); **/
+        filmList = new ArrayList<Film>();
         // Starts the film process
         downloadFilmList();
 
@@ -110,32 +122,30 @@ public class InitialRandom extends ActionBarActivity {
 
     public void downloadFilmList()
     {
-        ArrayList<URL> urls = new ArrayList<URL>();
+        ArrayList<String> urls = new ArrayList<String>();
         String string = "http://rss.imdb.com/list/ls004274013/";
-        try {
-            urls.add(new URL("http://rss.imdb.com/list/ls004274013/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls000050035/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls070785016/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls070099591/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls009668711/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls009669258/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls076186778/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls002875598/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls072631945/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls056161235/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls009674465/"));
-            urls.add(new URL("http://rss.imdb.com/list/ls009668314/"));
-        }
-        catch (MalformedURLException e) {
-            System.out.println("Error: " + e.getMessage());
-            e.printStackTrace();
-        }
 
-        for(URL url : urls) {
-            filmIds.addAll(IMDBParser.parseFeed(WebRequest.requestFeed(url)));
+        urls.add("http://rss.imdb.com/list/ls004274013/");
+        urls.add("http://rss.imdb.com/list/ls000050035/");
+        urls.add("http://rss.imdb.com/list/ls070785016/");
+        urls.add("http://rss.imdb.com/list/ls070099591/");
+        urls.add("http://rss.imdb.com/list/ls009668711/");
+        urls.add("http://rss.imdb.com/list/ls009669258/");
+        urls.add("http://rss.imdb.com/list/ls076186778/");
+        urls.add("http://rss.imdb.com/list/ls002875598/");
+        urls.add("http://rss.imdb.com/list/ls072631945/");
+        urls.add("http://rss.imdb.com/list/ls056161235/");
+        urls.add("http://rss.imdb.com/list/ls009674465/");
+        urls.add("http://rss.imdb.com/list/ls009668314/");
+
+
+
+        for(String url : urls) {
+            WebRequest wb = new WebRequest();
+            filmIds.addAll(IMDBParser.parseFeed(wb.requestFeed(url)));
         }
     }
-
+    //Possibly Deprecated
     public void advancedSettings()
     {
 
@@ -150,6 +160,7 @@ public class InitialRandom extends ActionBarActivity {
         }
     }
 
+    //Give orders to randomize depending on settings
     public void randomize()
     {
         Intent intent = new Intent(InitialRandom.this,RandomDisplayer.class);
@@ -178,16 +189,18 @@ public class InitialRandom extends ActionBarActivity {
         {
             Random random = new Random();
             int ran = random.nextInt(filmIds.size());
-            try {
-                list.add(IMDBParser.parseFilm(WebRequest.requestFeed(new URL("http://www.omdbapi.com/?i=" + filmIds.get(ran) + "&plot=short&r=xml"))));
-            } catch (MalformedURLException e) {
-                System.out.println("Error: " + e.getMessage());
-                e.printStackTrace();
-            }
+
+            WebRequest wb = new WebRequest();
+            list.add(IMDBParser.parseFilm(
+                    wb.requestFeed("http://www.omdbapi.com/?i="
+                            + filmIds.get(ran)
+                            + "&plot=short&r=xml")));
+
         }
         filmList = list;
     }
 
+    //Data used to test display
     public void dummyData()
     {
         ArrayList<Film> list = new ArrayList<Film>();
@@ -216,6 +229,7 @@ public class InitialRandom extends ActionBarActivity {
     }
 
 
+    //Android Default
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -223,6 +237,7 @@ public class InitialRandom extends ActionBarActivity {
         return true;
     }
 
+    //Android Default
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
