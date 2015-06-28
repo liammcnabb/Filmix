@@ -37,7 +37,6 @@ public class RandomDisplayer extends ActionBarActivity {
     int listIndex, maxIndex = 0;
     ArrayList<Film> list;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +65,7 @@ public class RandomDisplayer extends ActionBarActivity {
 
         final ImageButton randomButton = (ImageButton) findViewById(R.id.btnFurtherRandom);
 
+
         randomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,16 +74,11 @@ public class RandomDisplayer extends ActionBarActivity {
                     listIndex = maxIndex;
                 }
                     listIndex++;
-
-
                 randomize();
             }
         });
         randomize();
-
-
     }
-
 
     public void randomize()
     {
@@ -135,7 +130,6 @@ public class RandomDisplayer extends ActionBarActivity {
         {
             listIndex--;
         }
-
     }
 
     public void setupHistory()
@@ -171,10 +165,7 @@ public class RandomDisplayer extends ActionBarActivity {
                 }
             });
         }
-
-
     }
-
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -223,5 +214,3 @@ public class RandomDisplayer extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-

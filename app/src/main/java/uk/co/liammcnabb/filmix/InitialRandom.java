@@ -22,7 +22,10 @@ import com.google.android.gms.ads.AdRequest;
 
 import com.google.android.gms.ads.AdView;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class InitialRandom extends ActionBarActivity {
@@ -30,6 +33,7 @@ public class InitialRandom extends ActionBarActivity {
     LinearLayout settings;
     TextView authorID, customList;
     CheckBox idCheck, customCheck;
+    ArrayList<String> filmIds;
     ArrayList<Film> filmList;
 
     @Override
@@ -98,7 +102,39 @@ public class InitialRandom extends ActionBarActivity {
 
             }
         });
+
+        // Starts the film process
+        downloadFilmList();
+
         }
+
+    public void downloadFilmList()
+    {
+        ArrayList<URL> urls = new ArrayList<URL>();
+        String string = "http://rss.imdb.com/list/ls004274013/";
+        try {
+            urls.add(new URL("http://rss.imdb.com/list/ls004274013/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls000050035/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls070785016/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls070099591/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls009668711/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls009669258/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls076186778/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls002875598/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls072631945/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls056161235/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls009674465/"));
+            urls.add(new URL("http://rss.imdb.com/list/ls009668314/"));
+        }
+        catch (MalformedURLException e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        for(URL url : urls) {
+            filmIds.addAll(IMDBParser.parseFeed(WebRequest.requestFeed(url)));
+        }
+    }
 
     public void advancedSettings()
     {
@@ -128,10 +164,28 @@ public class InitialRandom extends ActionBarActivity {
         } else
         {
             //TODO Use Watchlist's to create a list of new Random Movies
-            dummyData();
+            //dummyData();
+            createNewFilmList();
             intent.putExtra("FilmList", new Wrapper(filmList));
         }
         startActivity(intent);
+    }
+
+    public void createNewFilmList()
+    {
+        ArrayList<Film> list = new ArrayList<Film>();
+        for(int i = 0; i<10; i++)
+        {
+            Random random = new Random();
+            int ran = random.nextInt(filmIds.size());
+            try {
+                list.add(IMDBParser.parseFilm(WebRequest.requestFeed(new URL("http://www.omdbapi.com/?i=" + filmIds.get(ran) + "&plot=short&r=xml"))));
+            } catch (MalformedURLException e) {
+                System.out.println("Error: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        filmList = list;
     }
 
     public void dummyData()
