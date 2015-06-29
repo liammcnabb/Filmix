@@ -15,8 +15,22 @@ public class IMDBParser {
 
     public static ArrayList<String> parseFeed(String string)
     {
+        boolean unsucessful=true;
         ArrayList<String> ids = new ArrayList<String>();
-        ByteArrayInputStream in = new ByteArrayInputStream(string.getBytes());
+        ByteArrayInputStream in;
+        in = new ByteArrayInputStream("".getBytes());
+        while(unsucessful)
+        {
+            try{
+                in = new ByteArrayInputStream(string.getBytes());
+                unsucessful = false;
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);

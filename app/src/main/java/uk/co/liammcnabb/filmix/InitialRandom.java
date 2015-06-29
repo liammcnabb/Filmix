@@ -30,11 +30,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -45,6 +47,9 @@ public class InitialRandom extends ActionBarActivity {
     CheckBox idCheck, customCheck;
     ArrayList<String> filmIds;
     ArrayList<Film> filmList;
+    String tempString;
+
+
 
     /**
      * Displayed on Activity Creation
@@ -141,8 +146,10 @@ public class InitialRandom extends ActionBarActivity {
 
 
         for(String url : urls) {
-            WebRequest wb = new WebRequest();
-            filmIds.addAll(IMDBParser.parseFeed(wb.requestFeed(url)));
+            new WebRequest1().execute(url);
+            while(tempString == null){}
+            filmIds.addAll(IMDBParser.parseFeed(tempString));
+
         }
     }
     //Possibly Deprecated
@@ -180,6 +187,7 @@ public class InitialRandom extends ActionBarActivity {
             intent.putExtra("FilmList", new Wrapper(filmList));
         }
         startActivity(intent);
+
     }
 
     public void createNewFilmList()
@@ -189,12 +197,11 @@ public class InitialRandom extends ActionBarActivity {
         {
             Random random = new Random();
             int ran = random.nextInt(filmIds.size());
-
-            WebRequest wb = new WebRequest();
+            new WebRequest1().execute("http://www.omdbapi.com/?i="
+                    + filmIds.get(ran)
+                    + "&plot=short&r=xml");
             list.add(IMDBParser.parseFilm(
-                    wb.requestFeed("http://www.omdbapi.com/?i="
-                            + filmIds.get(ran)
-                            + "&plot=short&r=xml")));
+                    tempString));
 
         }
         filmList = list;
@@ -228,8 +235,61 @@ public class InitialRandom extends ActionBarActivity {
         filmList = list;
     }
 
+    public class WebRequest1 extends AsyncTask<String, Void, String> {
+        String stream;
 
-    //Android Default
+        // public WebRequest(String location)
+        //{
+        //    requestFeed(location);
+        //}
+
+        /**
+         * public String requestFeed(final String location) {
+         * <p/>
+         * return doInBackground(location);
+         * <p/>
+         * <p/>
+         * }*
+         */
+        protected String doInBackground(String... url) {
+            String stream = "";
+            URL location;
+            try {
+                location = new URL(url[0]);
+                //Fails Here vvv
+                Log.d("WebRequest1", "location: " + location);
+                try {
+                    Reader r = new InputStreamReader(location.openStream(), "UTF-8");
+                    BufferedReader reader = new BufferedReader(r);
+                    String line ="";
+                    while((line = reader.readLine())!= null ) {
+                        stream += line;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (MalformedURLException e) {
+                //
+                //} catch (URISyntaxException e){
+                //
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.d("WebRequest", stream);
+            tempString = stream;
+            return stream;
+        }
+
+        protected void onPostExecute(String feed) {
+            tempString = feed;
+
+        }
+    }
+
+
+
+
+        //Android Default
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
